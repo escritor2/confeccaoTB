@@ -18,6 +18,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/notificacoes', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notificacoes/email-teste', [NotificationController::class, 'sendTestEmail'])->name('notifications.email-test');
     Route::patch('/notificacoes/lidas', [NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
     Route::patch('/notificacoes/{id}/lida', [NotificationController::class, 'markAsRead'])->name('notifications.mark-read');
 

@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\estoque;
+use App\Support\MailConfiguration;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -19,8 +20,7 @@ class EstoqueBaixoNotification extends Notification
     {
         $channels = ['database'];
 
-        if (config('mail.default') !== 'smtp' || 
-            (config('mail.mailers.smtp.username') && config('mail.mailers.smtp.password'))) {
+        if (MailConfiguration::isReadyForRealDelivery()) {
             $channels[] = 'mail';
         }
 
@@ -30,13 +30,14 @@ class EstoqueBaixoNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         $limite = $this->item->limiteMinimo();
+        $name = $notifiable->name ?? null;
 
         return (new MailMessage)
-            ->subject('Alerta: estoque baixo — '.$this->item->nome)
-            ->greeting('Olá, '.$notifiable->name.'!')
-            ->line('O item **'.$this->item->nome.'** está com quantidade abaixo do mínimo.')
-            ->line('Quantidade atual: **'.$this->item->quantidade.'** (mínimo: **'.$limite.'**).')
-            ->action('Ver estoque', url(route('estoque.index')))
+            ->subject('Alerta: estoque baixo - '.$this->item->nome)
+            ->greeting($name ? 'Ola, '.$name.'!' : 'Ola!')
+            ->line('O item '.$this->item->nome.' esta com quantidade abaixo do minimo.')
+            ->line('Quantidade atual: '.$this->item->quantidade.' (minimo: '.$limite.').')
+            ->action('Ver estoque', route('estoque.index'))
             ->line('Reponha o estoque o quanto antes para evitar ruptura.');
     }
 
@@ -46,7 +47,7 @@ class EstoqueBaixoNotification extends Notification
             'tipo' => 'estoque_baixo',
             'titulo' => 'Estoque baixo',
             'mensagem' => sprintf(
-                '%s: %d un. (mínimo %d)',
+                '%s: %d un. (minimo %d)',
                 $this->item->nome,
                 $this->item->quantidade,
                 $this->item->limiteMinimo()

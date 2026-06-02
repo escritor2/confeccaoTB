@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Support\MailConfiguration;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -21,8 +22,7 @@ class OperacaoSistemaNotification extends Notification
     {
         $channels = ['database'];
 
-        if (config('mail.default') !== 'smtp' || 
-            (config('mail.mailers.smtp.username') && config('mail.mailers.smtp.password'))) {
+        if (MailConfiguration::isReadyForRealDelivery()) {
             $channels[] = 'mail';
         }
 
@@ -31,9 +31,11 @@ class OperacaoSistemaNotification extends Notification
 
     public function toMail(object $notifiable): MailMessage
     {
+        $name = $notifiable->name ?? null;
+
         return (new MailMessage)
-            ->subject($this->titulo.' — '.config('app.name'))
-            ->greeting('Olá, '.$notifiable->name.'!')
+            ->subject($this->titulo.' - '.config('app.name'))
+            ->greeting($name ? 'Ola, '.$name.'!' : 'Ola!')
             ->line($this->mensagem)
             ->action('Abrir no sistema', url($this->url));
     }

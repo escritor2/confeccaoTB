@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+    .auth-weave {
+        background-image:
+            linear-gradient(90deg, rgba(15, 23, 42, 0.06) 1px, transparent 1px),
+            linear-gradient(rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+            radial-gradient(circle at 82% 18%, rgba(244, 63, 94, 0.12), transparent 28rem);
+        background-size: 24px 24px, 24px 24px, auto;
+    }
+}
