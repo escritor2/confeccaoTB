@@ -17,7 +17,14 @@ class EstoqueBaixoNotification extends Notification
 
     public function via(object $notifiable): array
     {
-        return ['mail', 'database'];
+        $channels = ['database'];
+
+        if (config('mail.default') !== 'smtp' || 
+            (config('mail.mailers.smtp.username') && config('mail.mailers.smtp.password'))) {
+            $channels[] = 'mail';
+        }
+
+        return $channels;
     }
 
     public function toMail(object $notifiable): MailMessage
