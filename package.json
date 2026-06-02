@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "jquery": "^4.0.0",
+    "jquery-mask-plugin": "^1.14.16"
+  },
+  "devDependencies": {
+    "@types/jquery": "^4.0.0"
+  }
+}
