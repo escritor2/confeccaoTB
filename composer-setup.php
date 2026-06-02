@@ -84,7 +84,6 @@ function process($argv)
     $ok = checkPlatform($warnings, $quiet, $disableTls, true);
 
     if ($check) {
-        // Only show warnings if we haven't output any errors
         if ($ok) {
             showWarnings($warnings);
             showSecurityWarning($disableTls);
@@ -186,7 +185,6 @@ function outputSupportsColor()
     }
 
     $stat = fstat(STDOUT);
-    // Check if formatted mode is S_IFCHR
     return $stat ? 0020000 === ($stat['mode'] & 0170000) : false;
 }
 
