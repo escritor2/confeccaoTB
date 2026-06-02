@@ -21,9 +21,13 @@ WORKDIR /var/www/html
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
 
+COPY package.json package-lock.json ./
+RUN npm install --no-audit --no-fund
+
 COPY . .
 
 RUN composer dump-autoload --optimize \
+    && npm run build \
     && php artisan package:discover --ansi
 
 RUN chmod +x docker/entrypoint.sh
