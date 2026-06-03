@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <img src="{{ asset('images/logo.png') }}" alt="Logo TS Confecções" class="block h-12 w-auto" onerror="this.src='https://ui-avatars.com/api/?name=TS+Confeccoes&color=7F9CF5&background=EBF4FF'">
+                    <span class="grid h-12 w-12 place-items-center rounded-md bg-slate-950 text-base font-black text-white">TS</span>
                     </a>
                 </div>
 
